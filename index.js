@@ -8,7 +8,7 @@ import { extension_settings, getContext } from '../../../extensions.js';
 import { eventSource, event_types } from '../../../../script.js';
 
 const EXTENSION_NAME = 'storyshare-workshop';
-const DEFAULT_WORKSHOP_URL = 'YOUR_DOMAIN_HERE';
+const DEFAULT_WORKSHOP_URL = 'http://localhost:5173/';
 
 let workshopWindow = null;
 
