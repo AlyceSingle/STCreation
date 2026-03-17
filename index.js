@@ -210,24 +210,49 @@ async function handleOpenOAuth(payload) {
     return;
   }
 
-  // 轮询检测弹窗关闭
+  // 监听来自 OAuth 回调页面的消息
+  const oauthMessageHandler = (event) => {
+    const { type, success } = event.data || {};
+    if (type === 'oauth_login_complete') {
+      console.log('[ST创意工坊] 收到 OAuth 完成通知:', success);
+      window.removeEventListener('message', oauthMessageHandler);
+      clearInterval(pollTimer);
+      clearTimeout(timeoutId);
+      // 尝试关闭弹窗
+      try {
+        authWindow.close();
+      } catch (e) {
+        console.warn('[ST创意工坊] 无法关闭 OAuth 弹窗:', e);
+      }
+      // 通知 iframe 里的工坊
+      workshopWindow.postMessage({ type: 'workshop_oauth_result', success: true }, '*');
+    }
+  };
+  window.addEventListener('message', oauthMessageHandler);
+
+  // 轮询检测弹窗关闭（备用方案）
   const pollTimer = setInterval(() => {
     try {
       if (authWindow.closed) {
         clearInterval(pollTimer);
+        clearTimeout(timeoutId);
+        window.removeEventListener('message', oauthMessageHandler);
         console.log('[ST创意工坊] OAuth 弹窗已关闭，通知工坊刷新登录状态');
         workshopWindow.postMessage({ type: 'workshop_oauth_result', success: true }, '*');
       }
     } catch (err) {
       // 跨域访问异常，假设弹窗已关闭
       clearInterval(pollTimer);
+      clearTimeout(timeoutId);
+      window.removeEventListener('message', oauthMessageHandler);
       workshopWindow.postMessage({ type: 'workshop_oauth_result', success: true }, '*');
     }
   }, 500);
 
   // 60 秒后停止轮询
-  setTimeout(() => {
+  const timeoutId = setTimeout(() => {
     clearInterval(pollTimer);
+    window.removeEventListener('message', oauthMessageHandler);
   }, 60000);
 }
 
