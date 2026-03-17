@@ -7,8 +7,9 @@
 
 import { getContext } from '../../../extensions.js';
 
-// ← 部署后将此处替换为你的工坊完整 URL（包含 /StoryShare/ 路径）
-const WORKSHOP_URL = 'http://localhost:5173/';
+// ← 部署后将此处替换为你的工坊完整 URL
+// 开发环境使用 127.0.0.1 而非 localhost，确保与 SillyTavern 同源，避免第三方 cookie 限制
+const WORKSHOP_URL = 'http://127.0.0.1:5173/';
 
 let workshopOverlay = null;
 let workshopIframe = null;
