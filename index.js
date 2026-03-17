@@ -161,6 +161,10 @@ async function handleWorkshopMessage(event) {
       workshopWindow.postMessage({ type: 'workshop_pong', connected: true }, '*');
       toastr.success('工坊已连接', 'ST创意工坊');
       break;
+    case 'workshop_open_oauth':
+      // 工坊请求打开 OAuth 弹窗（iframe 内无法打开弹窗）
+      await handleOpenOAuth(payload);
+      break;
     case 'workshop_scan':
       await handleScan(payload);
       break;
@@ -173,6 +177,58 @@ async function handleWorkshopMessage(event) {
     default:
       console.warn('[ST创意工坊] 未知消息类型:', type);
   }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 打开 OAuth 弹窗（由扩展在主页面打开，避免 iframe 弹窗被阻止）
+// ═══════════════════════════════════════════════════════════════════════════
+
+async function handleOpenOAuth(payload) {
+  const { authUrl } = payload;
+  if (!authUrl) {
+    console.error('[ST创意工坊] OAuth URL 缺失');
+    workshopWindow.postMessage({ type: 'workshop_oauth_result', success: false }, '*');
+    return;
+  }
+
+  console.log('[ST创意工坊] 打开 OAuth 弹窗:', authUrl);
+
+  const w = 500;
+  const h = 700;
+  const left = Math.max(0, (window.screen.width - w) / 2);
+  const top = Math.max(0, (window.screen.height - h) / 2);
+  const authWindow = window.open(
+    authUrl,
+    'DiscordAuth',
+    `width=${w},height=${h},left=${left},top=${top},resizable=yes,scrollbars=yes`
+  );
+
+  if (!authWindow) {
+    console.error('[ST创意工坊] 无法打开 OAuth 弹窗');
+    toastr.error('无法打开登录窗口，请检查浏览器弹窗设置', 'ST创意工坊');
+    workshopWindow.postMessage({ type: 'workshop_oauth_result', success: false }, '*');
+    return;
+  }
+
+  // 轮询检测弹窗关闭
+  const pollTimer = setInterval(() => {
+    try {
+      if (authWindow.closed) {
+        clearInterval(pollTimer);
+        console.log('[ST创意工坊] OAuth 弹窗已关闭，通知工坊刷新登录状态');
+        workshopWindow.postMessage({ type: 'workshop_oauth_result', success: true }, '*');
+      }
+    } catch (err) {
+      // 跨域访问异常，假设弹窗已关闭
+      clearInterval(pollTimer);
+      workshopWindow.postMessage({ type: 'workshop_oauth_result', success: true }, '*');
+    }
+  }, 500);
+
+  // 60 秒后停止轮询
+  setTimeout(() => {
+    clearInterval(pollTimer);
+  }, 60000);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
