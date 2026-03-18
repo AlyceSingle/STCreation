@@ -1,232 +1,176 @@
-# StoryShare 创意工坊 - SillyTavern 扩展
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![SillyTavern](https://img.shields.io/badge/SillyTavern-1.12.0+-orange.svg)](https://github.com/SillyTavern/SillyTavern)
-
-> 为 [StoryShare 创意工坊](https://github.com/AlyceSingle/STCreative-Workshop) 提供的 SillyTavern 扩展
+# StoryShare 创意工坊 SillyTavern 扩展
 
 一个 SillyTavern 扩展，提供弹窗式创意工坊浏览器，支持直接订阅/退订模组并插入世界书。
 
 ---
 
-## ✨ 功能特性
+## 功能特性
 
-- ✅ **一键打开工坊** - 从 SillyTavern Extensions 面板打开创意工坊弹窗
-- ✅ **弹窗式浏览器** - 无需离开 SillyTavern 主界面
-- ✅ **自动插入世界书** - 订阅模组后自动插入世界书条目
-- ✅ **自动移除条目** - 取消订阅后自动清理
-- ✅ **智能扫描** - 自动扫描已安装模组，防止重复和冲突
-- ✅ **自定义世界书** - 支持为每个工坊分区配置独立世界书名称
-- ✅ **实时同步** - 订阅/退订结果即时反馈
-
----
-
-## 📦 安装方法
-
-### 方法一：通过 GitHub URL 安装（推荐）
-
-1. **打开 SillyTavern**
-
-2. **进入 Extensions 面板**
-   - 点击顶部导航栏的 Extensions（扩展）图标
-
-3. **点击 "Install Extension" 按钮**
-
-4. **填写安装信息**：
-   ```
-   Repository URL: https://github.com/AlyceSingle/STCreation
-   Branch: main
-   Subfolder: (留空)
-   ```
-
-5. **点击 "Install"**
-
-6. **重启 SillyTavern**（刷新浏览器 F5）
+- ✅ 从 SillyTavern Extensions 面板一键打开创意工坊弹窗
+- ✅ 弹窗式浏览器，无需离开 SillyTavern 主界面
+- ✅ 订阅模组后**自动插入世界书条目**到本地 SillyTavern
+- ✅ 取消订阅后**自动移除**对应条目
+- ✅ 自动扫描已安装模组，防止重复安装冲突
+- ✅ 支持自定义世界书名称（每个工坊分区独立配置）
+- ✅ 实时同步状态，订阅/退订结果即时反馈
 
 ---
 
-### 方法二：手动安装
+## 安装方法
 
-#### Windows 用户
+### 1. 通过 GitHub URL 安装（推荐）
 
-```powershell
-# 1. 下载仓库
-cd $env:TEMP
-git clone https://github.com/AlyceSingle/STCreation.git
+1. 打开 SillyTavern
+2. 进入 **Extensions（扩展）** 面板
+3. 点击 **Install Extension（安装扩展）**
+4. 输入以下 GitHub URL：
 
-# 2. 复制到 SillyTavern（修改路径）
-$stPath = "C:\SillyTavern"
-Copy-Item -Recurse STCreation "$stPath\public\scripts\extensions\third-party\storyshare-workshop" -Force
-
-# 3. 重启 SillyTavern
+```
+https://github.com/AlyceSingle/STCreative-Workshop
 ```
 
-#### Linux/macOS 用户
+5. 在 **Branch** 中填写 `main`
+6. 在 **Subfolder** 中填写 `st-extension`
+7. 点击 **Install**
 
-```bash
-# 1. 下载仓库
-cd /tmp
-git clone https://github.com/AlyceSingle/STCreation.git
+### 2. 手动安装
 
-# 2. 复制到 SillyTavern（修改路径）
-cp -r STCreation /path/to/SillyTavern/public/scripts/extensions/third-party/storyshare-workshop
+1. 下载本目录下的所有文件：
+   - `manifest.json`
+   - `index.js`
+   - `style.css`
+   - `README.md`（可选）
 
-# 3. 重启 SillyTavern
+2. 将这些文件复制到 SillyTavern 的扩展目录：
+
+```
+<SillyTavern 根目录>/public/scripts/extensions/third-party/storyshare-workshop/
 ```
 
----
-
-## ⚙️ 配置和使用
-
-### 1. 配置工坊 URL
-
-安装完成后，在 SillyTavern 中：
-
-1. 打开 **Extensions** 面板
-2. 找到 **"StoryShare 创意工坊"** 折叠栏并展开
-3. 在 **"工坊网址"** 输入框中填写你的工坊地址：
-   ```
-   https://your-domain.com/StoryShare/
-   ```
-   
-   > ⚠️ **注意**：URL 必须包含 `/StoryShare/` 路径
-
-4. 设置会自动保存
-
-### 2. 打开创意工坊
-
-点击 **"打开创意工坊"** 按钮：
-- 弹出 960×700 的新窗口
-- 自动加载工坊网站
-- 自动进行握手连接
-
-### 3. 订阅模组
-
-在弹出的工坊窗口中：
-
-1. 浏览模组列表
-2. 点击模组卡片查看详情
-3. 点击 **"订阅到 ST"** 按钮
-4. 扩展自动：
-   - 将模组条目插入 SillyTavern 世界书
-   - 显示成功提示
-   - 更新订阅状态
-
-### 4. 检查世界书
-
-在 SillyTavern 中：
-1. 打开 **World Info** 编辑器
-2. 选择对应的世界书（如 "steampunk"）
-3. 查看新插入的条目
+3. 重启 SillyTavern 或刷新浏览器
 
 ---
 
-## 🔧 工作原理
+## 配置使用
+
+### 第一次使用
+
+1. 打开 SillyTavern 后，在 **Extensions（扩展）** 面板中找到 **StoryShare 创意工坊** 折叠栏
+2. 点击展开
+3. 在 **工坊网址** 输入框中填写你部署的工坊完整 URL，例如：
+
+```
+https://your-domain.com/StoryShare/
+```
+
+⚠️ **注意**：必须包含 `/StoryShare/` 路径（根据 Vite `base` 配置）
+
+4. 点击 **打开创意工坊** 按钮
+
+### 订阅模组
+
+1. 在弹出的工坊窗口中浏览模组
+2. 点击模组卡片进入详情页
+3. 点击 **订阅到 ST** 按钮
+4. 扩展会自动：
+   - 调用 SillyTavern API 加载当前世界书
+   - 移除该模组的旧条目（如有）
+   - 插入新条目到世界书
+   - 刷新世界书编辑器
+5. 订阅成功后会显示绿色通知
+
+### 取消订阅
+
+1. 在已订阅的模组详情页点击 **取消订阅**
+2. 扩展会自动移除该模组的所有条目
+3. 取消成功后会显示绿色通知
+
+### 世界书名称管理
+
+- 每个工坊分区（如 `steampunk`、`chainsaw`）可以配置独立的世界书名称
+- 默认名称在 `frontend/src/config/sections.js` 中定义
+- 在工坊列表页顶部可以编辑当前世界书名称，修改后会持久化到 localStorage
+
+---
+
+## 技术说明
 
 ### 通信协议
 
-扩展和工坊弹窗使用 `window.postMessage` 进行跨窗口通信：
+扩展和弹窗之间使用 `window.postMessage` 进行跨窗口通信：
 
-```
-SillyTavern Extension ←→ 工坊弹窗 (Vue)
-     ↓                         ↓
-loadWorldInfo()          检测 window.opener
-saveWorldInfo()          发送 postMessage
-reloadWorldInfoEditor()  接收结果
-```
+**工坊 → 扩展**
 
-### 消息类型
+| 消息类型 | payload | 说明 |
+|---------|---------|------|
+| `workshop_ping` | `{}` | 握手请求 |
+| `workshop_scan` | `{ worldbookName }` | 扫描已订阅模组 |
+| `workshop_subscribe` | `{ packId, packTitle, worldbookName, entries }` | 订阅模组 |
+| `workshop_unsubscribe` | `{ packId, worldbookName }` | 取消订阅 |
 
-| 方向 | 消息类型 | 功能 |
-|-----|---------|------|
-| 工坊 → 扩展 | `workshop_ping` | 握手请求 |
-| 扩展 → 工坊 | `workshop_pong` | 握手响应 |
-| 工坊 → 扩展 | `workshop_scan` | 扫描已订阅模组 |
-| 工坊 → 扩展 | `workshop_subscribe` | 订阅模组 |
-| 工坊 → 扩展 | `workshop_unsubscribe` | 取消订阅 |
-| 扩展 → 工坊 | `*_result` | 操作结果反馈 |
+**扩展 → 工坊**
+
+| 消息类型 | payload | 说明 |
+|---------|---------|------|
+| `workshop_pong` | `{ connected: true }` | 握手响应 |
+| `workshop_scan_result` | `{ success, packIds, entryCountMap }` | 扫描结果 |
+| `workshop_subscribe_result` | `{ success, message }` | 订阅结果 |
+| `workshop_unsubscribe_result` | `{ success, message, removedCount }` | 退订结果 |
 
 ### 安全性
 
-- ✅ 扩展验证 `event.source === workshopWindow`
-- ✅ 工坊验证 `event.source === window.opener`
-- ✅ 所有请求 5 秒超时保护
-- ✅ 条目标记 `extra.source = 'storyshare_workshop'`
+- 扩展验证 `event.source === workshopWindow`（窗口引用）
+- 工坊验证 `event.source === window.opener`
+- 超时保护：所有请求 5 秒超时
+
+### 条目格式
+
+条目转换为 SillyTavern 的 `FlattenedWorldInfoEntry` 格式，包含：
+
+- 标准字段：`uid`, `comment`, `content`, `key`, `keysecondary`, `position`, `order`, `depth`, `probability` 等
+- 自定义标记：`extra.source = 'storyshare_workshop'`, `extra.pack_id` 用于追踪和冲突检测
+
+### 幂等性
+
+- 订阅前会先移除同一 `pack_id` 的所有旧条目
+- UID 自动分配，避免冲突（`Math.max(...existingUids) + 1`）
 
 ---
 
-## 🐛 常见问题
+## 常见问题
 
-### 问题 1：点击"打开创意工坊"没反应
+### 1. 点击"打开创意工坊"后没有弹窗
 
-**原因**：浏览器拦截弹窗
+- 检查浏览器弹窗拦截设置，允许 SillyTavern 的弹窗
+- 确认工坊网址已正确配置
 
-**解决**：
-1. 检查浏览器地址栏右侧弹窗拦截图标
-2. 允许 SillyTavern 的弹窗
-3. 重新点击按钮
+### 2. 订阅后提示"未连接到 SillyTavern 扩展"
 
----
+- 关闭工坊弹窗，重新从扩展面板打开
+- 检查浏览器控制台是否有跨域错误（应为同源或允许 `*`）
 
-### 问题 2：弹窗显示"未连接到 SillyTavern 扩展"
+### 3. 订阅成功但世界书编辑器未刷新
 
-**原因**：握手失败
+- 手动刷新世界书编辑器（关闭重开）
+- 或重启 SillyTavern
 
-**解决**：
-1. 关闭弹窗
-2. 重新从扩展面板打开
-3. 检查浏览器控制台（F12）错误
+### 4. 如何更新扩展？
 
----
-
-### 问题 3：订阅提示"请求超时"
-
-**原因**：postMessage 未正确传递
-
-**解决**：
-1. 确认工坊 URL 配置正确
-2. 必须从扩展按钮打开（不是直接访问）
-3. 刷新两个窗口重试
+- 通过 GitHub 安装的：在扩展面板点击更新按钮
+- 手动安装的：重新下载文件覆盖
 
 ---
 
-### 问题 4：订阅成功但世界书没条目
+## 开发者信息
 
-**原因**：编辑器未刷新
+本扩展由 **StoryShare Team** 开发，基于 `SteamPunkStore_demo` 项目。
 
-**解决**：
-1. 关闭世界书编辑器重新打开
-2. 或重启 SillyTavern
-3. 检查世界书名称是否正确
-
----
-
-## 📝 技术规格
-
-- **扩展名称**: StoryShare 创意工坊
-- **版本**: 1.0.0
-- **兼容性**: SillyTavern 1.12.0+
-- **文件大小**: < 20KB
-- **依赖**: 无
+- 主项目：`https://github.com/AlyceSingle/STCreative-Workshop`
+- 扩展版本：`1.0.0`
+- 兼容 SillyTavern：`1.12.0+`
 
 ---
 
-## 🔗 相关链接
-
-- **主项目**: [StoryShare 创意工坊](https://github.com/AlyceSingle/STCreative-Workshop)
-- **问题反馈**: [Issues](https://github.com/AlyceSingle/STCreation/issues)
-- **SillyTavern**: [官方仓库](https://github.com/SillyTavern/SillyTavern)
-
----
-
-## 📄 License
+## License
 
 根据主项目许可协议分发。
-
----
-
-## 👥 作者
-
-**StoryShare Team**
-
-- 主项目: [@AlyceSingle](https://github.com/AlyceSingle)
